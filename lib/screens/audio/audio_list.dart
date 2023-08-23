@@ -157,7 +157,7 @@ class _AudioListState extends State<AudioList> {
                                                       ..title =
                                                           list[index]['title']
                                                           ..isEdit=true
-                                                      ..description =
+                                                      ..audio_url =
                                                           list[index]
                                                               ['audio_link']
                                                               ..id =  list[index]
