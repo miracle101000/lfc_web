@@ -21,9 +21,6 @@ class _AnnouncementsState extends State<Announcements> {
   TextEditingController c = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String selectedText = '';
-  bool isLoading = false, hasError = false;
-  bool isIniting = false;
   @override
   void initState() {
     super.initState();
@@ -34,57 +31,98 @@ class _AnnouncementsState extends State<Announcements> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0, left: 16),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.1,
-                      child: const Text(
-                        "Announcements",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
+    return Consumer<AnnouncementsProvider>(builder: (context, l, _) {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 12.0, left: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.1,
+                        child: const Text(
+                          "Announcements",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        height: 50,
-                        child: Consumer<AnnouncementsProvider>(
-                            builder: (context, l, _) {
-                          return l.ignore == false
-                              ? ListView.builder(
-                                  itemCount: l.l.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (_, index) => GestureDetector(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: 50,
+                            child: l.ignore == false
+                                ? Row(
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.65,
+                                        child: l.l.isNotEmpty
+                                            ? ListView.builder(
+                                                itemCount: l.l.length,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemBuilder:
+                                                    (_, index) =>
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            l.selectedText =
+                                                                l.l[index]
+                                                                    ['type'];
+                                                            pageController
+                                                                .jumpToPage(
+                                                              index,
+                                                            );
+                                                          },
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        8.0),
+                                                            child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    l.l[index][
+                                                                            'type']
+                                                                        .toString()
+                                                                        .capitalize(),
+                                                                    style: TextStyle(
+                                                                        fontWeight: l.selectedText == l.l[index]['type'] || l.selectedText == '' && index == 0
+                                                                            ? FontWeight
+                                                                                .bold
+                                                                            : null,
+                                                                       ),
+                                                                  ),
+                                                                ]),
+                                                          ),
+                                                        ))
+                                            : const SizedBox.shrink(),
+                                      ),
+                                      GestureDetector(
                                         onTap: () {
-                                          if (l.l[index]['type'] != '+') {
-                                            setState(() {
-                                              selectedText = l.l[index]['type'];
-                                            });
-                                            pageController.jumpToPage(
-                                              index,
-                                            );
-                                          } else {
-                                            l.ignore = true;
-                                          }
+                                          l.ignore = true;
                                         },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
                                               horizontal: 8.0),
                                           child: Column(
                                               mainAxisAlignment:
@@ -93,128 +131,116 @@ class _AnnouncementsState extends State<Announcements> {
                                                   CrossAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  l.l[index]['type']
-                                                      .toString()
-                                                      .capitalize(),
+                                                  "+",
                                                   style: TextStyle(
-                                                      fontWeight: selectedText ==
-                                                                  l.l[index][
-                                                                      'type'] ||
-                                                              selectedText ==
-                                                                      '' &&
-                                                                  index == 0
-                                                          ? FontWeight.bold
-                                                          : null,
-                                                      color: l.l[index]
-                                                                  ['type'] ==
-                                                              '+'
-                                                          ? Colors.red
-                                                          : null),
+                                                      fontWeight: null,
+                                                      color: Colors.red),
                                                 ),
                                               ]),
                                         ),
-                                      ))
-                              : Row(
-                                  children: [
-                                    SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.512,
-                                        child: Form(
-                                          key: _formKey,
-                                          child: CustomTextField(
-                                            hintText: "Annoucement Title",
-                                            controller: c,
-                                            validator: (_) {
-                                              if (_!.isEmpty) {
-                                                return 'Cannot be empty';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            l.setMap(
-                                                {'type': c.text, 'text': ""});
+                                      )
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.512,
+                                          child: Form(
+                                            key: _formKey,
+                                            child: CustomTextField(
+                                              hintText: "Annoucement Title",
+                                              controller: c,
+                                              validator: (_) {
+                                                if (_!.isEmpty) {
+                                                  return 'Cannot be empty';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          )),
+                                      TextButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              l.setMap(
+                                                  {'type': c.text, 'text': ""});
+                                              l.ignore = false;
+                                            }
+                                          },
+                                          child: const Text(
+                                            "Submit",
+                                            style: TextStyle(color: Colors.red),
+                                          )),
+                                      TextButton(
+                                          onPressed: () {
                                             l.ignore = false;
-                                          }
-                                        },
-                                        child: const Text(
-                                          "Submit",
-                                          style: TextStyle(color: Colors.red),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {
-                                          l.ignore = false;
-                                        },
-                                        child: const Text(
-                                          "Cancel",
-                                          style: TextStyle(color: Colors.red),
-                                        ))
-                                  ],
-                                );
-                        }),
-                      ),
-                    )
-                  ],
+                                          },
+                                          child: const Text(
+                                            "Cancel",
+                                            style: TextStyle(color: Colors.red),
+                                          ))
+                                    ],
+                                  )),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              isIniting && !hasError
-                  ? const Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.red,
+                l.isIniting && !l.hasError
+                    ? const Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.red,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  : !isIniting && hasError
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                                child: ElevatedButton(
-                                    style: const ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(
-                                                Colors.red)),
-                                    onPressed: () async {
-                                      await _get();
-                                    },
-                                    child: const Text("Error"))),
-                          ],
-                        )
-                      : Consumer<AnnouncementsProvider>(
-                          builder: (context, l, _) {
-                          return SizedBox(
+                        ],
+                      )
+                    : !l.isIniting && l.hasError
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                  child: ElevatedButton(
+                                      style: const ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                                  Colors.red)),
+                                      onPressed: () async {
+                                        await _get();
+                                      },
+                                      child: const Text("Error"))),
+                            ],
+                          )
+                        : SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height,
-                            child: PageView.builder(
-                              itemCount: l.l.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              controller: pageController,
-                              itemBuilder: (_, index) {
-                                return AnnouncementWidget(
-                                  title: l.l[index]['type'],
-                                  text: l.l[index]['text'],
-                                  index: index,
-                                );
-                              },
-                            ),
-                          );
-                        })
-            ],
+                            child: l.l.isNotEmpty
+                                ? PageView.builder(
+                                    itemCount: l.l.length,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    controller: pageController,
+                                    itemBuilder: (_, index) {
+                                      return AnnouncementWidget(
+                                        title: l.l[index]['type'],
+                                        text: l.l[index]['text'],
+                                        index: index,
+                                      );
+                                    },
+                                  )
+                                : const SizedBox.shrink())
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   _showDialog() {
@@ -230,12 +256,10 @@ class _AnnouncementsState extends State<Announcements> {
         });
   }
 
-  setisLoadingHasError(bool v, bool v1) {
+  setisLoadingHasError(bool v, bool v1, AnnouncementsProvider l) {
     if (mounted) {
-      setState(() {
-        isIniting = v;
-        hasError = v1;
-      });
+      l.isIniting = v;
+      l.hasError = v1;
     }
   }
 
@@ -247,9 +271,10 @@ class _AnnouncementsState extends State<Announcements> {
         },
         projection: {},
         sortBy: '_id',
-        limit: 5,
+        limit: 100,
         showLoading: () {
-          setisLoadingHasError(true, false);
+          setisLoadingHasError(true, false,
+              Provider.of<AnnouncementsProvider>(context, listen: false));
         },
         onDone: (_) async {
           if (_.isNotEmpty) {
@@ -258,12 +283,14 @@ class _AnnouncementsState extends State<Announcements> {
                   .setList(_);
             }
           }
-          setisLoadingHasError(false, false);
+          setisLoadingHasError(false, false,
+              Provider.of<AnnouncementsProvider>(context, listen: false));
         },
         onError: (_) async {
           await Provider.of<AnnouncementsProvider>(context, listen: false)
               .clear();
-          setisLoadingHasError(false, true);
+          setisLoadingHasError(false, true,
+              Provider.of<AnnouncementsProvider>(context, listen: false));
           Helper.showToast(_.toString());
         });
   }

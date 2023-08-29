@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lfc_web/my_drawer.dart';
+import 'package:lfc_web/provider/announcements_provider.dart';
 import 'package:lfc_web/screens/accounts/accounts_main.dart';
 import 'package:lfc_web/screens/announcements/announcements.dart';
 import 'package:lfc_web/screens/audio/audio_main.dart';
@@ -77,15 +78,17 @@ class _LargeScreenState extends State<LargeScreen> {
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
-        children: const [
-          LatestMain(),
-          VideosMain(),
-          AudioMain(),
-          BooksMain(),
-          AccountsMain(),
-          TestimoniesMain(),
-          WSFMain(),
-          Announcements(),
+        children: [
+          const LatestMain(),
+          const VideosMain(),
+          const AudioMain(),
+          const BooksMain(),
+          const AccountsMain(),
+          const TestimoniesMain(),
+          const WSFMain(),
+          Consumer<AnnouncementsProvider>(builder: (context, a, _) {
+            return a.refresh ? const SizedBox() : const Announcements();
+          }),
         ],
       ),
     );

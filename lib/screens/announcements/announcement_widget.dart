@@ -61,11 +61,27 @@ class _AnnouncementWidgetState extends State<AnnouncementWidget> {
                     height: MediaQuery.of(context).size.height * 0.8,
                     child: Column(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 32.0),
-                          child: Text(
-                            "Announcements",
-                            style: TextStyle(letterSpacing: 1),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 32.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Announcements",
+                                style: TextStyle(letterSpacing: 1),
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              IconButton(
+                                  onPressed: () async {
+                                    await _delete(widget.title);
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                  ))
+                            ],
                           ),
                         ),
                         Padding(
@@ -251,4 +267,26 @@ class _AnnouncementWidgetState extends State<AnnouncementWidget> {
           Helper.showToast(_.toString());
         });
   }
+
+
+  _delete(String type) async {
+    await MongoDB.deleteData(
+        filter: {
+          "type": {"\$eq": type}
+        },
+        showLoading: () {
+          Helper.showToast("Deleting...");
+         
+        },
+        onDone: (_) async {
+          Helper.showToast("Successful");
+          Provider.of<AnnouncementsProvider>(context, listen: false)
+              .refres();
+        },
+        onError: (_) {
+          Helper.showToast('Deletion Failed');
+        });
+  }
+
+
 }

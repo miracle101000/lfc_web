@@ -30,9 +30,11 @@ class _LatestUploadState extends State<LatestUpload> {
   @override
   void initState() {
     super.initState();
-    Provider.of<LatestProvider>(context, listen: false)
-      ..controller = controller
-      ..isEdit = false;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<LatestProvider>(context, listen: false)
+        ..controller = controller
+        ..isEdit = false;
+    });
   }
 
   @override

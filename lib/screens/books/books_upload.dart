@@ -215,7 +215,7 @@ class _BooksUploadState extends State<BooksUpload> {
                 child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.5,
                     child: CustomTextField(
-                      hintText: "Length in minutes",
+                      hintText: "Number of Pages",
                       type: TextInputType.number,
                       controller: controller2,
                       onChanged: (_) {

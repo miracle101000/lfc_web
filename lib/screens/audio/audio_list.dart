@@ -101,15 +101,12 @@ class _AudioListState extends State<AudioList> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10)),
-                                      child: Image.network(
-                                        list[index]['image_url'],
-                                        height: 100,
-                                        width: 120,
-                                        fit: BoxFit.cover,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CircleAvatar(
+                                        backgroundImage: NetworkImage(
+                                            list[index]['image_url']),
+                                        backgroundColor: Colors.red,
                                       ),
                                     ),
                                     Expanded(
@@ -128,17 +125,6 @@ class _AudioListState extends State<AudioList> {
                                                       vertical: 8.0),
                                               child: Text(list[index]['title']),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8.0),
-                                              child: Text(
-                                                list[index]['audio_link'],
-                                                style: TextStyle(
-                                                    color:
-                                                        Colors.grey.shade500),
-                                              ),
-                                            ),
                                             Length(
                                                 length: list[index]['length']
                                                     .toString()),
@@ -151,23 +137,18 @@ class _AudioListState extends State<AudioList> {
                                           const EdgeInsets.only(right: 8.0),
                                       child: CustomListButton(
                                           onPressed: () async {
-                                             Provider.of<AudioProvider>(
-                                                        context,
-                                                        listen: false)
-                                                      ..title =
-                                                          list[index]['title']
-                                                          ..isEdit=true
-                                                      ..audio_url =
-                                                          list[index]
-                                                              ['audio_link']
-                                                              ..id =  list[index]
-                                                              ['_id']
-                                                      ..image_url = list[index]
-                                                          ['image_url']
-                                                      ..length = list[index]
-                                                              ['length']
-                                                          .toString();
-                                                  },
+                                            Provider.of<AudioProvider>(context,
+                                                listen: false)
+                                              ..title = list[index]['title']
+                                              ..isEdit = true
+                                              ..audio_url =
+                                                  list[index]['audio_link']
+                                              ..id = list[index]['_id']
+                                              ..image_url =
+                                                  list[index]['image_url']
+                                              ..length = list[index]['length']
+                                                  .toString();
+                                          },
                                           text: "Edit"),
                                     ),
                                     Padding(

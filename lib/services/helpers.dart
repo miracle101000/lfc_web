@@ -56,8 +56,11 @@ class Helper {
       UploadTask task = ref.putData(
           file,
           SettableMetadata(
-              contentType:
-                  storagePath == 'books/document' ? 'pdf' : 'image/jpeg'));
+              contentType: storagePath == 'books/document'
+                  ? 'application/pdf'
+                  : storagePath == 'audios/audio'
+                      ? 'audio/mpeg'
+                      : 'image/jpeg'));
       task.snapshotEvents.listen(onData);
       task.whenComplete(() async {
         onDone(await ref.getDownloadURL());

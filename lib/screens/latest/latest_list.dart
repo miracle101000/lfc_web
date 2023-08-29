@@ -93,65 +93,72 @@ class _LatestListState extends State<LatestList> {
                           child: Material(
                             elevation: 5,
                             borderRadius: BorderRadius.circular(10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Container(
+                              constraints: const BoxConstraints(minHeight: 120),
+                              child: IntrinsicHeight(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                 
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(10),
-                                          bottomLeft: Radius.circular(10)),
-                                      child: Image.network(
-                                        list[index]['image_url'],
-                                        fit: BoxFit.cover,
-                                        // height: clampDouble(100, 100, max),
-                                        width: 120,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        child: Text(list[index]['text']
-                                            .toString()
+                                    Expanded(
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:const BorderRadius.only(topLeft:  Radius.circular(10), bottomLeft: Radius.circular(10),),
+                                            child: Image.network(
+                                              list[index]['image_url'],
+                                              fit: BoxFit.cover,
+                                              // height: clampDouble(100, 100, max),
+                                              width: 120,
                                             ),
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                alignment: Alignment.centerLeft,
+                                               
+                                                child: Text(
+                                                    list[index]['text'].toString()),
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: CustomListButton(
-                                          onPressed: () {
-                                            Provider.of<LatestProvider>(context,
-                                                listen: false)
-                                              ..id = list[index]['_id']
-                                              ..isEdit = true
-                                              ..text = list[index]['text'];
-                                          },
-                                          text: "Edit"),
                                     ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
-                                      child: CustomListButton(
-                                          onPressed: () {
-                                            _delete(list[index]['_id'],
-                                                list[index]['image_url']);
-                                          },
-                                          text: "Delete"),
-                                    )
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
+                                          child: CustomListButton(
+                                              onPressed: () {
+                                                Provider.of<LatestProvider>(
+                                                    context,
+                                                    listen: false)
+                                                  ..id = list[index]['_id']
+                                                  ..isEdit = true
+                                                  ..text = list[index]['text'];
+                                              },
+                                              text: "Edit"),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
+                                          child: CustomListButton(
+                                              onPressed: () {
+                                                _delete(list[index]['_id'],
+                                                    list[index]['image_url']);
+                                              },
+                                              text: "Delete"),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         );
