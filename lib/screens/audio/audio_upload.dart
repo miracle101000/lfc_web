@@ -144,7 +144,7 @@ class _AudioUploadState extends State<AudioUpload> {
                           )
                         : Text(
                             progress1 == 1 ? "File uploaded !!" : "Upload file",
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                   ),
                 ),

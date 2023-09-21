@@ -27,6 +27,12 @@ class Helper {
         } else {
           onError("Image cannot be more than 2.5 MB");
         }
+      } else if (type == FileType.video) {
+        if (picked != null) {
+          onDone(picked.files.single.bytes);
+        } else if (picked == null) {
+          onError("No file picked");
+        }
       } else {
         if (picked != null && picked.files.single.bytes!.length <= 25000000) {
           onDone(picked.files.single.bytes);
@@ -60,7 +66,9 @@ class Helper {
                   ? 'application/pdf'
                   : storagePath == 'audios/audio'
                       ? 'audio/mpeg'
-                      : 'image/jpeg'));
+                      : storagePath == 'videos/video'
+                          ? 'video/mp4'
+                          : 'image/jpeg'));
       task.snapshotEvents.listen(onData);
       task.whenComplete(() async {
         onDone(await ref.getDownloadURL());

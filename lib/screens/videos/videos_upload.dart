@@ -20,15 +20,14 @@ class VideosUpload extends StatefulWidget {
 }
 
 class _VideosUploadState extends State<VideosUpload> {
-  Uint8List? file;
-  bool isLoading = false, showProgress = false;
-  bool isUpload = false;
-  double progress = 0.0;
+  Uint8List? file, file1;
+  bool isLoading = false, showProgress = false, showProgress1 = false;
+  bool isUpload = false, isUpload1 = false;
+  double progress = 0.0, progress1 = 0.0;
 
-  String _downloadUrl = '';
+  String _downloadUrl = '', _downloadUrl1 = '';
   TextEditingController controller = TextEditingController(),
       controller1 = TextEditingController(),
-      controller2 = TextEditingController(),
       controller3 = TextEditingController();
 
   @override
@@ -37,7 +36,6 @@ class _VideosUploadState extends State<VideosUpload> {
     Provider.of<VideoProvider>(context, listen: false)
       ..controller = controller
       ..controller1 = controller1
-      ..controller2 = controller2
       ..controller3 = controller3
       ..isEdit = false;
   }
@@ -69,7 +67,7 @@ class _VideosUploadState extends State<VideosUpload> {
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
-                    await _getFile();
+                    await _getFile(FileType.image);
                   },
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.3,
@@ -119,11 +117,75 @@ class _VideosUploadState extends State<VideosUpload> {
               else if (isUpload)
                 ElevatedButton(
                     onPressed: () async {
-                      await _upload();
+                      await _upload(FileType.image);
                     },
                     style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.red)),
                     child: const Text("Upload")),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0, bottom: 16),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                    await _getFile(FileType.video);
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                    ),
+                    alignment: Alignment.center,
+                    child: file1 == null
+                        ? const Text(
+                            "Upload video here",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : Text(
+                            progress1 == 1 ? "File uploaded !!" : "Upload file",
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                  ),
+                ),
+              ),
+              if (isUpload1 && showProgress1)
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.55,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 32.0),
+                          child: LinearProgressIndicator(
+                            value: progress1,
+                            color: Colors.red,
+                            backgroundColor: Colors.red,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                                Colors.orange),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text((progress1 * 100) == 100
+                            ? "Done"
+                            : "${Helper.dp((progress1 * 100), 2)}%"),
+                      )
+                    ],
+                  ),
+                )
+              else if (isUpload1)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        await _upload(FileType.video);
+                      },
+                      style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.red)),
+                      child: const Text("Upload")),
+                ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: SizedBox(
@@ -149,19 +211,7 @@ class _VideosUploadState extends State<VideosUpload> {
                       },
                     )),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: CustomTextField(
-                      hintText:
-                          "Link: https://www.youtube.com/live/heXQ8jaNYjE?feature=share",
-                      controller: controller2,
-                      onChanged: (_) {
-                        setState(() {});
-                      },
-                    )),
-              ),
+             
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: SizedBox(
@@ -196,24 +246,36 @@ class _VideosUploadState extends State<VideosUpload> {
     });
   }
 
-  _getFile() async {
+  _getFile(FileType type) async {
     await Helper.getFile(
-        type: FileType.image,
+        type: type,
         showLoading: () {
           if (mounted) {
             setState(() {
-              file = null;
-              showProgress = false;
-              progress = 0.0;
-              _downloadUrl = '';
+              if (type == FileType.image) {
+                file = null;
+                showProgress = false;
+                progress = 0.0;
+                _downloadUrl = '';
+              } else {
+                file1 = null;
+                showProgress1 = false;
+                progress1 = 0.0;
+                _downloadUrl1 = '';
+              }
             });
           }
         },
         onDone: (_) {
           if (mounted) {
             setState(() {
-              file = _;
-              isUpload = true;
+              if (type == FileType.image) {
+                file = _;
+                isUpload = true;
+              } else {
+                file1 = _;
+                isUpload1 = true;
+              }
             });
           }
         },
@@ -236,16 +298,6 @@ class _VideosUploadState extends State<VideosUpload> {
       return;
     }
 
-    if (controller2.text.isEmpty) {
-      Helper.showToast("Link cannot be empty");
-      return;
-    }
-
-    if (Helper.isYouTubeLink(controller2.text) == false) {
-      Helper.showToast("Not a youtube link");
-      return;
-    }
-
     if (controller3.text.isEmpty) {
       Helper.showToast("Length cannot be empty");
       return;
@@ -261,7 +313,7 @@ class _VideosUploadState extends State<VideosUpload> {
       return;
     }
 
-    if (_downloadUrl.isNotEmpty || v.isEdit) {
+    if (_downloadUrl.isNotEmpty && _downloadUrl1.isNotEmpty || v.isEdit) {
       if (!v.isEdit) {
         await MongoDB.insertData(
             document: {
@@ -270,7 +322,7 @@ class _VideosUploadState extends State<VideosUpload> {
               "collection": "videos",
               'time': DateTime.now().toIso8601String(),
               'description': controller1.text,
-              'video_link': controller2.text,
+              'video_link': _downloadUrl1,
               'length': int.tryParse(controller3.text)
             },
             showLoading: () {
@@ -286,12 +338,13 @@ class _VideosUploadState extends State<VideosUpload> {
                   isLoading = false;
                   _downloadUrl = '';
                   progress = 0.0;
-                  showProgress = false;
+                  _downloadUrl1 = '';
+                  progress1 = 0.0;
                   file = null;
+                  file1 = null;
                   isUpload = false;
                   controller.clear();
                   controller1.clear();
-                  controller2.clear();
                   controller3.clear();
                 });
               }
@@ -309,18 +362,21 @@ class _VideosUploadState extends State<VideosUpload> {
         if (_downloadUrl.isNotEmpty) {
           await FirebaseStorage.instance.refFromURL(v.image_url).delete();
         }
+
+        if (_downloadUrl1.isNotEmpty) {
+          await FirebaseStorage.instance.refFromURL(v.video_link).delete();
+        }
         await MongoDB.updateData(
             filter: {
               '_id': {
                 "\$eq": {'\$oid': v.id}
               }
-              
             },
             document: {
               if (_downloadUrl.isNotEmpty) 'image_url': _downloadUrl,
               if (controller.text.isNotEmpty) 'title': controller.text,
               if (controller1.text.isNotEmpty) 'description': controller1.text,
-              if (controller2.text.isNotEmpty) 'video_link': controller2.text,
+              if (_downloadUrl1.isNotEmpty) 'video_link': _downloadUrl1,
               if (controller3.text.isNotEmpty)
                 'length': int.tryParse(controller3.text)
             },
@@ -339,12 +395,10 @@ class _VideosUploadState extends State<VideosUpload> {
                   _downloadUrl = '';
                   progress = 0.0;
                   showProgress = false;
-
                   file = null;
                   isUpload = false;
                   controller.clear();
                   controller1.clear();
-                  controller2.clear();
                   controller3.clear();
                 });
               }
@@ -361,32 +415,60 @@ class _VideosUploadState extends State<VideosUpload> {
       }
       Provider.of<WSFProvider>(context, listen: false).refreshm();
     } else {
-      await Helper.showToast("Expecting an uploaded image");
+     if (_downloadUrl.isEmpty) {
+        await Helper.showToast("Expecting an uploaded image");
+      }
+      if (_downloadUrl1.isEmpty) {
+        await Helper.showToast("Expecting an uploaded video");
+      }
+
+      if (_downloadUrl.isEmpty && _downloadUrl1.isEmpty) {
+        await Helper.showToast("Expecting an uploaded image & video");
+      }
     }
   }
 
-  _upload() {
+  _upload(FileType type) {
     Helper.uploadFile(
-        storagePath: 'videos',
+        storagePath:  type == FileType.image ? 'videos/image' : 'videos/video',
         showLoading: () {},
         onDone: (_) {
-          if (mounted) {
+         if (mounted) {
             setState(() {
-              _downloadUrl = _;
+              if (type == FileType.image) {
+                _downloadUrl = _;
+              } else {
+                _downloadUrl1 = _;
+              }
             });
           }
         },
         onError: (_) async {
+          if (mounted) {
+            setState(() {
+              if (type == FileType.image) {
+                isUpload = false;
+              } else {
+                isUpload1 = false;
+              }
+            });
+          }
+
           await Helper.showToast(_.toString());
         },
         onData: (_) {
-          if (mounted) {
+           if (mounted) {
             setState(() {
-              showProgress = true;
-              progress = _.bytesTransferred / file!.length;
+              if (type == FileType.image) {
+                showProgress = true;
+                progress = _.bytesTransferred / file!.length;
+              } else {
+                showProgress1 = true;
+                progress1 = _.bytesTransferred / file1!.length;
+              }
             });
           }
         },
-        file: file!);
+        file:type == FileType.image ? file! : file1!);
   }
 }
