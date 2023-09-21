@@ -211,7 +211,6 @@ class _VideosUploadState extends State<VideosUpload> {
                       },
                     )),
               ),
-             
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: SizedBox(
@@ -343,6 +342,7 @@ class _VideosUploadState extends State<VideosUpload> {
                   file = null;
                   file1 = null;
                   isUpload = false;
+                  isUpload1 = false;
                   controller.clear();
                   controller1.clear();
                   controller3.clear();
@@ -393,10 +393,15 @@ class _VideosUploadState extends State<VideosUpload> {
                 setState(() {
                   isLoading = false;
                   _downloadUrl = '';
+                  _downloadUrl1 = '';
                   progress = 0.0;
-                  showProgress = false;
+                  progress1 = 0.0;
+                  // showProgress = false;
+                  // showProgress1 = false;
                   file = null;
+                  file1 = null;
                   isUpload = false;
+                  isUpload1 = false;
                   controller.clear();
                   controller1.clear();
                   controller3.clear();
@@ -415,7 +420,7 @@ class _VideosUploadState extends State<VideosUpload> {
       }
       Provider.of<WSFProvider>(context, listen: false).refreshm();
     } else {
-     if (_downloadUrl.isEmpty) {
+      if (_downloadUrl.isEmpty) {
         await Helper.showToast("Expecting an uploaded image");
       }
       if (_downloadUrl1.isEmpty) {
@@ -430,10 +435,10 @@ class _VideosUploadState extends State<VideosUpload> {
 
   _upload(FileType type) {
     Helper.uploadFile(
-        storagePath:  type == FileType.image ? 'videos/image' : 'videos/video',
+        storagePath: type == FileType.image ? 'videos/image' : 'videos/video',
         showLoading: () {},
         onDone: (_) {
-         if (mounted) {
+          if (mounted) {
             setState(() {
               if (type == FileType.image) {
                 _downloadUrl = _;
@@ -457,7 +462,7 @@ class _VideosUploadState extends State<VideosUpload> {
           await Helper.showToast(_.toString());
         },
         onData: (_) {
-           if (mounted) {
+          if (mounted) {
             setState(() {
               if (type == FileType.image) {
                 showProgress = true;
@@ -469,6 +474,6 @@ class _VideosUploadState extends State<VideosUpload> {
             });
           }
         },
-        file:type == FileType.image ? file! : file1!);
+        file: type == FileType.image ? file! : file1!);
   }
 }

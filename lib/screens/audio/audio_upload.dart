@@ -369,6 +369,7 @@ class _AudioUploadState extends State<AudioUpload> {
                   progress = 0.0;
                   showProgress = false;
                   file = null;
+                  file1 = null;
                   isUpload = false;
                   controller.clear();
                   controller2.clear();
