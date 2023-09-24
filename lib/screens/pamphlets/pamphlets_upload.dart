@@ -54,7 +54,7 @@ class _PamphletsUploadState extends State<PamphletsUpload> {
                 child: Row(
                   children: [
                     Text(
-                      "Books",
+                      "Pamphlets",
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -426,7 +426,7 @@ class _PamphletsUploadState extends State<PamphletsUpload> {
 
   _upload(FileType type) {
     Helper.uploadFile(
-        storagePath: type == FileType.image ? 'pamphlets/cover' : 'pamphlets/cover',
+        storagePath: type == FileType.image ? 'pamphlets/cover' : 'pamphlets/document',
         showLoading: () {},
         onDone: (_) {
           if (mounted) {

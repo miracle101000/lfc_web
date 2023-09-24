@@ -361,10 +361,9 @@ class _BooksUploadState extends State<BooksUpload> {
         }
         await MongoDB.updateData(
             filter: {
-            '_id': {
+              '_id': {
                 "\$eq": {'\$oid': b.id}
               }
-
             },
             document: {
               if (_downloadUrl.isNotEmpty) 'image_url': _downloadUrl,

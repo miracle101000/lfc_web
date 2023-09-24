@@ -62,7 +62,9 @@ class Helper {
       UploadTask task = ref.putData(
           file,
           SettableMetadata(
-              contentType: storagePath == 'books/document'
+              contentType: storagePath == 'books/document' ||
+                      storagePath == 'pamphlets/document' ||
+                      storagePath == 'announcements/document'
                   ? 'application/pdf'
                   : storagePath == 'audios/audio'
                       ? 'audio/mpeg'
