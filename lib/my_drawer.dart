@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatefulWidget {
-  final void Function(dynamic,int) onTap;
+  final void Function(dynamic, int) onTap;
   final String selected;
   const MyDrawer({super.key, required this.onTap, required this.selected});
 
@@ -23,7 +23,7 @@ class _MyDrawerState extends State<MyDrawer> {
             itemBuilder: (_, index) {
               return GestureDetector(
                 onTap: () {
-                  widget.onTap.call(_list[index],index);
+                  widget.onTap.call(_list[index], index);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -49,6 +49,7 @@ class _MyDrawerState extends State<MyDrawer> {
     "Videos",
     "Audio",
     "Books",
+    "Pamphlets",
     "Account No.",
     "Testimonies",
     "WSF",

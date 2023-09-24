@@ -6,6 +6,7 @@ import 'package:lfc_web/screens/announcements/announcements.dart';
 import 'package:lfc_web/screens/audio/audio_main.dart';
 import 'package:lfc_web/screens/books/books_main.dart';
 import 'package:lfc_web/screens/latest/latest_main.dart';
+import 'package:lfc_web/screens/pamphlets/pamphlets_main.dart';
 import 'package:lfc_web/screens/testimonies/testimonies_main.dart';
 import 'package:lfc_web/screens/videos/videos_main.dart';
 import 'package:lfc_web/screens/wsf/wsf_main.dart';
@@ -83,6 +84,7 @@ class _LargeScreenState extends State<LargeScreen> {
           const VideosMain(),
           const AudioMain(),
           const BooksMain(),
+          const PamphletsMain(),
           const AccountsMain(),
           const TestimoniesMain(),
           const WSFMain(),

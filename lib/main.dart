@@ -3,6 +3,7 @@ import 'package:lfc_web/provider/accounts_provider.dart';
 import 'package:lfc_web/provider/announcements_provider.dart';
 import 'package:lfc_web/provider/book_provider.dart';
 import 'package:lfc_web/provider/latest_provider.dart';
+import 'package:lfc_web/provider/pamphlets_provider.dart';
 import 'package:lfc_web/provider/testimonies_provider.dart';
 import 'package:lfc_web/provider/wsf_provider.dart';
 import 'package:lfc_web/screens/large_screen.dart';
@@ -44,6 +45,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BookProvider()),
         ChangeNotifierProvider(create: (context) => AccountsProvider()),
         ChangeNotifierProvider(create: (context) => TestimoniesProvider()),
+        ChangeNotifierProvider(create: (context) =>  PamphletsProvider()),
+       
       ],
       child: MaterialApp(
         title: 'LFC TRADEMORE APP ADMIN',
