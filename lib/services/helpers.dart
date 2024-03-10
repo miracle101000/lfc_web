@@ -63,8 +63,7 @@ class Helper {
           file,
           SettableMetadata(
               contentType: storagePath == 'books/document' ||
-                      storagePath == 'pamphlets/document' ||
-                      storagePath == 'announcements/document'
+                      storagePath == 'pamphlets/document' 
                   ? 'application/pdf'
                   : storagePath == 'audios/audio'
                       ? 'audio/mpeg'

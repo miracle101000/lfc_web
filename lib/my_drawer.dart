@@ -53,6 +53,8 @@ class _MyDrawerState extends State<MyDrawer> {
     "Account No.",
     "Testimonies",
     "WSF",
-    "Announcements"
+    "Announcements",
+    "Notifications",
+    "Live"
   ];
 }

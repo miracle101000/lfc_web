@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lfc_web/my_drawer.dart';
 import 'package:lfc_web/provider/announcements_provider.dart';
 import 'package:lfc_web/screens/accounts/accounts_main.dart';
-import 'package:lfc_web/screens/announcements/announcements.dart';
+import 'package:lfc_web/screens/announcements/announcements_main.dart';
 import 'package:lfc_web/screens/audio/audio_main.dart';
 import 'package:lfc_web/screens/books/books_main.dart';
 import 'package:lfc_web/screens/latest/latest_main.dart';
+import 'package:lfc_web/screens/live/live_main.dart';
 import 'package:lfc_web/screens/pamphlets/pamphlets_main.dart';
 import 'package:lfc_web/screens/testimonies/testimonies_main.dart';
 import 'package:lfc_web/screens/videos/videos_main.dart';
@@ -13,6 +14,7 @@ import 'package:lfc_web/screens/wsf/wsf_main.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/wsf_provider.dart';
+import 'notifications/notifications.dart';
 
 class LargeScreen extends StatefulWidget {
   const LargeScreen({super.key});
@@ -22,7 +24,7 @@ class LargeScreen extends StatefulWidget {
 }
 
 class _LargeScreenState extends State<LargeScreen> {
-  GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   String selected = "Latest";
   bool isOpen = false;
   int currentIndex = 0;
@@ -89,7 +91,11 @@ class _LargeScreenState extends State<LargeScreen> {
           const TestimoniesMain(),
           const WSFMain(),
           Consumer<AnnouncementsProvider>(builder: (context, a, _) {
-            return a.refresh ? const SizedBox() : const Announcements();
+            return a.refresh ? const SizedBox() : const AnnouncementsMain();
+          }),
+          const Notifications(),
+          Consumer<AnnouncementsProvider>(builder: (context, a, _) {
+            return a.refresh ? const SizedBox() : const LiveMain();
           }),
         ],
       ),
