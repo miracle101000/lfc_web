@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:lfc_web/services/mongo_server.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LiveUpload extends StatefulWidget {
   const LiveUpload({super.key});
@@ -100,7 +101,11 @@ class _LiveUploadState extends State<LiveUpload> {
               });
             }
           },
-          onDone: () {
+          onDone: () async {
+           await  FirebaseFirestore.instance
+                .collection("Live")
+                .doc('count')
+                .update({'value': 0});
             if (mounted) {
               setState(() {
                 isLoading = false;
