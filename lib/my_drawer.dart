@@ -46,6 +46,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
   final List<String> _list = [
     "Latest",
+    "Latest Videos",
     "Videos",
     "Audio",
     "Books",

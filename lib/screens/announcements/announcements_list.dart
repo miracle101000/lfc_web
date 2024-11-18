@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lfc_web/services/mongo_server.dart';
 import '../../services/helpers.dart';
 import '../../widgets/custom_button.dart';
+import 'package:extended_image/extended_image.dart';
 
 class AnnouncementsList extends StatefulWidget {
   const AnnouncementsList({super.key});
@@ -107,7 +108,7 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
                                               topLeft: Radius.circular(10),
                                               bottomLeft: Radius.circular(10),
                                             ),
-                                            child: Image.network(
+                                            child: ExtendedImage.network(
                                               list[index]['image_url'],
                                               fit: BoxFit.cover,
                                               // height: clampDouble(100, 100, max),
@@ -124,7 +125,8 @@ class _AnnouncementsListState extends State<AnnouncementsList> {
                                               const EdgeInsets.only(right: 8.0),
                                           child: CustomListButton(
                                               onPressed: () async {
-                                               await  _delete(list[index]['_id'],
+                                                await _delete(
+                                                    list[index]['_id'],
                                                     list[index]['image_url']);
                                               },
                                               text: "Delete"),

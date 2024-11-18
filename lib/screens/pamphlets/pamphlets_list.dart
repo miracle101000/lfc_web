@@ -3,7 +3,7 @@ import 'package:lfc_web/provider/book_provider.dart';
 import 'package:lfc_web/screens/widgets/custom_button.dart';
 import 'package:lfc_web/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
-
+import 'package:extended_image/extended_image.dart';
 import '../../provider/pamphlets_provider.dart';
 import '../../services/helpers.dart';
 import '../../services/mongo_server.dart';
@@ -106,7 +106,7 @@ class _PamphletsListState extends State<PamphletsList> {
                                       borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           topRight: Radius.circular(10)),
-                                      child: Image.network(
+                                      child: ExtendedImage.network(
                                         list[index]['image_url'],
                                         height: 100,
                                         width: 120,
@@ -148,7 +148,8 @@ class _PamphletsListState extends State<PamphletsList> {
                                           const EdgeInsets.only(right: 8.0),
                                       child: CustomListButton(
                                           onPressed: () async {
-                                            Provider.of<PamphletsProvider>(context,
+                                            Provider.of<PamphletsProvider>(
+                                                context,
                                                 listen: false)
                                               ..title = list[index]['title']
                                               ..author = list[index]['author']
@@ -157,7 +158,7 @@ class _PamphletsListState extends State<PamphletsList> {
                                                   list[index]['image_url']
                                               ..pdf_url =
                                                   list[index]['book_url']
-                                                  ..isEdit=true
+                                              ..isEdit = true
                                               ..length = list[index]['length']
                                                   .toString();
                                           },

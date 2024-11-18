@@ -192,6 +192,7 @@ class _LatestUploadState extends State<LatestUpload> {
               'image_url': _downloadUrl,
               'text': controller.text,
               "collection": "latest",
+              "type": "image",
               'time': DateTime.now().toIso8601String()
             },
             showLoading: () {

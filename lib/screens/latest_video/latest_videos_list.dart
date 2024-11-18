@@ -6,14 +6,14 @@ import 'package:extended_image/extended_image.dart';
 import '../../services/helpers.dart';
 import '../../services/mongo_server.dart';
 
-class VideosList extends StatefulWidget {
-  const VideosList({super.key});
+class LatestVideosList extends StatefulWidget {
+  const LatestVideosList({super.key});
 
   @override
-  State<VideosList> createState() => _VideosListState();
+  State<LatestVideosList> createState() => _LatestVideosListState();
 }
 
-class _VideosListState extends State<VideosList> {
+class _LatestVideosListState extends State<LatestVideosList> {
   bool isLoading = false, hasError = false, isLoadMore = false;
   List list = [];
   var _lastDocument;
@@ -103,12 +103,12 @@ class _VideosListState extends State<VideosList> {
                                             MediaQuery.of(context).size.width *
                                                 0.45,
                                       ),
-                                      Positioned(
-                                          bottom: 16,
-                                          left: 16,
-                                          child: Length(
-                                              length: list[index]['length']
-                                                  .toString())),
+                                      // Positioned(
+                                      //     bottom: 16,
+                                      //     left: 16,
+                                      //     child: Length(
+                                      //         length: list[index]['length']
+                                      //             .toString())),
                                       Positioned(
                                         top: 16,
                                         right: 16,
@@ -123,22 +123,23 @@ class _VideosListState extends State<VideosList> {
                                                           MaterialStatePropertyAll(
                                                               Colors.red)),
                                                   onPressed: () async {
-                                                    Provider.of<VideoProvider>(
+                                                    Provider.of<
+                                                            LatestVideoProvider>(
                                                         context,
                                                         listen: false)
                                                       ..title =
-                                                          list[index]['title']
-                                                      ..description =
-                                                          list[index]
-                                                              ['description']
+                                                          list[index]['text']
+                                                      // ..description =
+                                                      //     list[index]
+                                                      //         ['description']
                                                       ..isEdit = true
                                                       ..id = list[index]['_id']
                                                       ..image_url = list[index]
                                                           ['image_url']
                                                       ..video_link = list[index]
-                                                          ['video_link']
-                                                      ..length = list[index]
-                                                              ['length']
+                                                              ['video_link']
+                                                          // ..length = list[index]
+                                                          //         ['length']
                                                           .toString();
                                                   },
                                                   child: const Text("Edit")),
@@ -185,13 +186,7 @@ class _VideosListState extends State<VideosList> {
                                                     const EdgeInsets.symmetric(
                                                         vertical: 8.0),
                                                 child:
-                                                    Text(list[index]['title']),
-                                              ),
-                                              Text(
-                                                list[index]['description'],
-                                                style: TextStyle(
-                                                    color:
-                                                        Colors.grey.shade800),
+                                                    Text(list[index]['text']),
                                               ),
                                               Padding(
                                                 padding:
@@ -222,7 +217,8 @@ class _VideosListState extends State<VideosList> {
     if (loadMore == null) list.clear();
     await MongoDB.getData(
         filter: {
-          'collection': {'\$eq': 'videos'},
+          'collection': {'\$eq': 'latest'},
+          'type': {'\$eq': 'video'},
           if (loadMore != null)
             '_id': {
               '\$gt': {'\$oid': _lastDocument['_id']}

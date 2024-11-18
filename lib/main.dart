@@ -40,13 +40,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => WSFProvider()),
         ChangeNotifierProvider(create: (context) => AnnouncementsProvider()),
         ChangeNotifierProvider(create: (context) => LatestProvider()),
+        ChangeNotifierProvider(create: (context) => LatestVideoProvider()),
         ChangeNotifierProvider(create: (context) => VideoProvider()),
         ChangeNotifierProvider(create: (context) => AudioProvider()),
         ChangeNotifierProvider(create: (context) => BookProvider()),
         ChangeNotifierProvider(create: (context) => AccountsProvider()),
         ChangeNotifierProvider(create: (context) => TestimoniesProvider()),
-        ChangeNotifierProvider(create: (context) =>  PamphletsProvider()),
-       
+        ChangeNotifierProvider(create: (context) => PamphletsProvider()),
       ],
       child: MaterialApp(
         title: 'LFC TRADEMORE APP ADMIN',

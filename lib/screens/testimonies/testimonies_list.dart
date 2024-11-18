@@ -4,7 +4,7 @@ import 'package:lfc_web/screens/widgets/custom_button.dart';
 import 'package:lfc_web/screens/wsf/wsf_list.dart';
 import 'package:lfc_web/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
-
+import 'package:extended_image/extended_image.dart';
 import '../../services/helpers.dart';
 import '../../services/mongo_server.dart';
 
@@ -106,7 +106,7 @@ class _TestimoniesListState extends State<TestimoniesList> {
                                       borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           topRight: Radius.circular(10)),
-                                      child: Image.network(
+                                      child: ExtendedImage.network(
                                         list[index]['image_url'],
                                         height: 100,
                                         width: 120,
@@ -135,8 +135,8 @@ class _TestimoniesListState extends State<TestimoniesList> {
                                                   color: Colors.grey.shade800),
                                             ),
                                             Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 8.0,bottom: 8),
+                                              padding: EdgeInsets.only(
+                                                  left: 8.0, bottom: 8),
                                               child: Text(
                                                 list[index]['category'],
                                                 style: TextStyle(
@@ -162,7 +162,9 @@ class _TestimoniesListState extends State<TestimoniesList> {
                                                 context,
                                                 listen: false)
                                               ..name = list[index]['name']
-                                              ..type = list[index]['type'].toString().capitalize()
+                                              ..type = list[index]['type']
+                                                  .toString()
+                                                  .capitalize()
                                               ..testimony =
                                                   list[index]['testimony']
                                               ..category =

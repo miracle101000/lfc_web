@@ -14,6 +14,7 @@ import 'package:lfc_web/screens/wsf/wsf_main.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/wsf_provider.dart';
+import 'latest_video/latest_videos_main.dart';
 import 'notifications/notifications.dart';
 
 class LargeScreen extends StatefulWidget {
@@ -83,6 +84,7 @@ class _LargeScreenState extends State<LargeScreen> {
         controller: pageController,
         children: [
           const LatestMain(),
+          const LatestVideosMain(),
           const VideosMain(),
           const AudioMain(),
           const BooksMain(),

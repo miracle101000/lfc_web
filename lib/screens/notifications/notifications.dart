@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lfc_web/services/helpers.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -90,30 +90,38 @@ class _NotificationsState extends State<Notifications> {
       if (mounted) {
         setState(() {});
       }
-      http.Response resp =
-          await http.post(Uri.parse("https://fcm.googleapis.com/fcm/send"),
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization":
-                    "key=AAAAABtw79c:APA91bHVn6M5v2LTFeXWKsErONtc0SfGEdGcZ3YKgJ0n8qUjL1o2NnhH7zE_33IZrRct2h4EkFU0_dDJEf6h5FKpWHr3kpgrYOzio_c9E1AG684-Xn3RWPISCDAfHyeOj7A_djNTp4gf",
-              },
-              body: json.encode({
-                "to": "/topics/General",
-                "notification": {
-                  "title": controller.text.trim(),
-                  "body": controller1.text.trim(),
-                  "clickAction": 'FLUTTER_NOTIFICATION_CLICK',
-                  "sound": 'default',
-                }
-              }));
-      print("object: ${resp.statusCode}");
-      if (resp.statusCode == 200) {
-        isLoading = false;
-        if (mounted) {
-          setState(() {});
-        }
-        Helper.showToast("Users noitified successfully");
+      await FirebaseFirestore.instance.collection('Notifications').doc().set({
+        "topic": "General",
+        "title": controller.text.trim(),
+        "body": controller1.text.trim(),
+        "clickAction": 'FLUTTER_NOTIFICATION_CLICK',
+        "sound": 'default',
+        'time': DateTime.now().toIso8601String()
+      });
+      // http.Response resp =
+      //     await http.post(Uri.parse("https://fcm.googleapis.com/v1/projects/lfctrademore-5eefe/messages:send"),
+      //         headers: {
+      //           "Content-Type": "application/json",
+      //           "Authorization":
+      //               "key=AAAAABtw79c:APA91bHVn6M5v2LTFeXWKsErONtc0SfGEdGcZ3YKgJ0n8qUjL1o2NnhH7zE_33IZrRct2h4EkFU0_dDJEf6h5FKpWHr3kpgrYOzio_c9E1AG684-Xn3RWPISCDAfHyeOj7A_djNTp4gf",
+      //         },
+      //         body: json.encode({
+      //           "to": "/topics/General",
+      //           "notification": {
+      //             "title": controller.text.trim(),
+      //             "body": controller1.text.trim(),
+      //             "clickAction": 'FLUTTER_NOTIFICATION_CLICK',
+      //             "sound": 'default',
+      //           }
+      //         }));
+      // print("object: ${resp.statusCode}");
+      // if (resp.statusCode == 200) {
+      isLoading = false;
+      if (mounted) {
+        setState(() {});
       }
+      Helper.showToast("Users noitified successfully");
+      // }
     } catch (_) {
       isLoading = false;
       if (mounted) {

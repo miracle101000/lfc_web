@@ -3,6 +3,7 @@ import 'package:lfc_web/provider/book_provider.dart';
 import 'package:lfc_web/screens/widgets/custom_button.dart';
 import 'package:lfc_web/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
+import 'package:extended_image/extended_image.dart';
 
 import '../../services/helpers.dart';
 import '../../services/mongo_server.dart';
@@ -105,7 +106,7 @@ class _BooksListState extends State<BooksList> {
                                       borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(10),
                                           topRight: Radius.circular(10)),
-                                      child: Image.network(
+                                      child: ExtendedImage.network(
                                         list[index]['image_url'],
                                         height: 100,
                                         width: 120,
@@ -156,7 +157,7 @@ class _BooksListState extends State<BooksList> {
                                                   list[index]['image_url']
                                               ..pdf_url =
                                                   list[index]['book_url']
-                                                  ..isEdit=true
+                                              ..isEdit = true
                                               ..length = list[index]['length']
                                                   .toString();
                                           },

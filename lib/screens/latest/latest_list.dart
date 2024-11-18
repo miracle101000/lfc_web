@@ -7,6 +7,7 @@ import 'package:lfc_web/services/mongo_server.dart';
 import '../../services/helpers.dart';
 import '../../widgets/custom_button.dart';
 import 'package:provider/provider.dart';
+import 'package:extended_image/extended_image.dart';
 
 class LatestList extends StatefulWidget {
   const LatestList({super.key});
@@ -97,8 +98,8 @@ class _LatestListState extends State<LatestList> {
                               constraints: const BoxConstraints(minHeight: 120),
                               child: IntrinsicHeight(
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                 
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     Expanded(
                                       child: Row(
@@ -106,8 +107,12 @@ class _LatestListState extends State<LatestList> {
                                             CrossAxisAlignment.stretch,
                                         children: [
                                           ClipRRect(
-                                            borderRadius:const BorderRadius.only(topLeft:  Radius.circular(10), bottomLeft: Radius.circular(10),),
-                                            child: Image.network(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                            ),
+                                            child: ExtendedImage.network(
                                               list[index]['image_url'],
                                               fit: BoxFit.cover,
                                               // height: clampDouble(100, 100, max),
@@ -116,12 +121,12 @@ class _LatestListState extends State<LatestList> {
                                           ),
                                           Expanded(
                                             child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: Container(
                                                 alignment: Alignment.centerLeft,
-                                               
-                                                child: Text(
-                                                    list[index]['text'].toString()),
+                                                child: Text(list[index]['text']
+                                                    .toString()),
                                               ),
                                             ),
                                           )
